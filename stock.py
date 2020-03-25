@@ -119,19 +119,21 @@ from sklearn.pipeline import make_pipeline
 
 poly = PolynomialFeatures(degree=2)
 x_train_poly = poly.fit_transform(x_train)
-print(x_train_poly)
 
 clf_1 = linear_model.LinearRegression()
 train_y_ = clf_1.fit(x_train_poly, y_train)
+predicted_value_clf_1 = clf_1.predict(x_test)
+print("Linear 2 degree")
 print(clf_1.intercept_)
 print(clf_1.coef_)
 
 poly = PolynomialFeatures(degree=3)
 x_train_poly = poly.fit_transform(x_train)
-print(x_train_poly)
 
 clf_2 = linear_model.LinearRegression()
 train_y_ = clf_2.fit(x_train_poly, y_train)
+predicted_value_clf_2 = clf_2.predict(x_test)
+print("Linear 3 degree")
 print(clf_2.intercept_)
 print(clf_2.coef_)
 
@@ -144,7 +146,10 @@ def f_2(x):
     return clf_2.intercept_[0] + clf_2.coef_[0][1] * x + clf_2.coef_[0][2] * x ** 2 + clf_2.coef_[0][3] * x ** 3
 
 
-plt.scatter(train.Total_Cases, train.Close, color='blue')
+#
+plt.scatter(train.Total_Cases, train.Close, color='blue', label='Train values')
+plt.scatter(x_test, predicted_value_clf_1, color="yellow", label='Predicted val 2 degree')
+plt.scatter(x_test, predicted_value_clf_2, color='purple', label='Predicted val 3 degree')
 xx = np.arange(0, 2 * 10 ** 5)
 plt.plot(xx, f_1(xx), '-r', label='degree 2')
 plt.plot(xx, f_2(xx), '-g', label='degree 3')
@@ -153,11 +158,4 @@ plt.ylabel('Close')
 plt.legend(loc='lower left')
 plt.show()
 
-model = make_pipeline(PolynomialFeatures(degree=2), linear_model.Ridge)
-model.fit(x_train, y_train)
-y_plot()
-#
-
-
-# Logistic
-from sklearn.linear_model import LogisticRegression
+# Evaluate
