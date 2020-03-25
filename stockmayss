@@ -1,0 +1,103 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import datetime as dt
+import seaborn as sns
+
+
+
+def to_date(x):
+    x = x.split('/')  #
+    return dt.datetime(year=int("20" + x[2]), month=int(x[0]), day=int(x[1]))
+
+
+sp = pd.read_csv('~/Desktop/Corona/S&P500.csv', delimiter=r",")
+sp = sp[['Date', 'Open', 'Close', 'Volume']]
+
+cd = pd.read_csv('~/Desktop/Corona/COVID19.csv', delimiter=r",")
+cd = cd.rename(columns={"DateRep": "Date", "Countries and territories": "Country", "Cases": "Daily_Cases"}, errors="raise")
+cd['Date'] = cd['Date'].apply(to_date)
+sp['Date'] = pd.to_datetime(sp['Date'])
+
+cd_us = cd[['Date', 'Daily_Cases', 'Deaths', 'Country', 'GeoId']].query("GeoId == 'US'")
+cd_world = cd[['Date', 'Daily_Cases', 'Deaths', 'Country', 'GeoId']].groupby(['Date'])['Daily_Cases'].sum()
+
+print(cd_world)
+
+result_us = pd.merge(sp, cd_us, on='Date')
+result_world = pd.merge(sp, cd_world, on='Date')
+
+result_us = result_us[['Date', 'Close', 'Daily_Cases']]
+result_world = result_world[['Date', 'Close', 'Daily_Cases']]
+
+print(result_world)
+
+sns.lineplot(x="Date", y="Close", data=sp)
+plt.ylabel('S&P Close Price')
+plt.xlabel('Date')
+plt.show()
+plt.clf()
+
+
+
+sns.lineplot(x="Date", y="Daily_Cases", data=result_us)
+plt.ylabel('Daily Corona Cases in the U.S.')
+plt.xlabel('Date')
+plt.show()
+plt.clf()
+
+sns.lineplot(x="Date", y="Daily_Cases", data=result_world)
+plt.ylabel('Daily Corona Cases Worldwide')
+plt.xlabel('Date')
+plt.show()
+plt.clf()
+
+
+result_us_sortedbycase = result_us.sort_values(['Daily_Cases']).reset_index(drop=True)
+sns.scatterplot('Daily_Cases', 'Close', data=result_us)
+plt.show()
+plt.clf()
+
+result_world_sortedbycase = result_world.sort_values(['Daily_Cases']).reset_index(drop=True)
+sns.scatterplot('Daily_Cases', 'Close', data=result_world)
+plt.show()
+plt.clf()
+
+
+# Cumulative sum
+
+result_world['Total_Cases']= result_world['Daily_Cases'].cumsum(skipna=False)
+print(result_world)
+result_us['Total_Cases']= result_us['Daily_Cases'].cumsum(skipna=False)
+print(result_us)
+
+sns.lineplot(x="Date", y="Total_Cases", data=result_us)
+plt.ylabel('Total Corona Cases in the U.S.')
+plt.xlabel('Date')
+plt.show()
+plt.clf()
+
+sns.lineplot(x="Date", y="Total_Cases", data=result_world)
+plt.ylabel('Total Corona Cases Worldwide')
+plt.xlabel('Date')
+plt.show()
+plt.clf()
+
+
+result_us_sortedbycase = result_us.sort_values(['Total_Cases']).reset_index(drop=True)
+sns.scatterplot('Total_Cases', 'Close', data=result_us)
+plt.show()
+plt.clf()
+
+result_world_sortedbycase = result_world.sort_values(['Total_Cases']).reset_index(drop=True)
+sns.scatterplot('Total_Cases', 'Close', data=result_world)
+plt.show()
+plt.clf()
+
+
+# a very ugly plot to delete which is the list of daily cases by country
+sns.lineplot(x="Date", y="Daily_Cases", hue="Country", data=cd)
+plt.ylabel('Total Corona Cases in the U.S.')
+plt.xlabel('Date')
+plt.show()
+plt.clf()
