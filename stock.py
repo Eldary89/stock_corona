@@ -66,7 +66,7 @@ plt.clf()
 
 result_world['Total_Cases'] = result_world['Daily_Cases'].cumsum(skipna=False)
 result_world50k = result_world[result_world['Total_Cases'] > 58000]
-# print(result_world)
+print(result_world50k)
 result_us['Total_Cases'] = result_us['Daily_Cases'].cumsum(skipna=False)
 # print(result_us)
 
@@ -164,7 +164,7 @@ def f_2(x):
 plt.scatter(result_world50k.Total_Cases, result_world50k.Close, color='blue', label='Train values')
 plt.scatter(x_test, predicted_value_clf_1, color="yellow", label='Predicted val 2 degree')
 plt.scatter(x_test, predicted_value_clf_2, color='purple', label='Predicted val 3 degree')
-xx = np.arange(58 * 1 ** 3, 4 * 10 ** 5)
+xx = np.arange(58 * 10 ** 3, 4 * 10 ** 5)
 plt.plot(xx, f_1(xx), '-r', label='degree 2')
 plt.plot(xx, f_2(xx), '-g', label='degree 3')
 plt.xlabel('Total Cases')
