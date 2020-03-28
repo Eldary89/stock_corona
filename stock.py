@@ -28,11 +28,11 @@ cd_world = cd[['Date', 'Daily_Cases', 'Deaths', 'Country', 'GeoId']].groupby(['D
 
 result_us = pd.merge(sp, cd_us, on='Date')
 result_world = pd.merge(sp, cd_world, on='Date')
-print(result_world.dtypes)
+# print(result_world.dtypes)
 
 result_us = result_us[['Date', 'Close', 'Daily_Cases']]
 result_world = result_world[['Date', 'Close', 'Daily_Cases']]
-print(result_world)
+# print(result_world)
 
 sns.lineplot(x="Date", y="Close", data=sp)
 plt.ylabel('S&P Close Price')
@@ -46,11 +46,11 @@ plt.clf()
 # plt.show()
 # plt.clf()
 #
-sns.lineplot(x="Date", y="Daily_Cases", data=result_world)
-plt.ylabel('Daily Corona Cases Worldwide')
-plt.xlabel('Date')
-plt.show()
-plt.clf()
+# sns.lineplot(x="Date", y="Daily_Cases", data=result_world)
+# plt.ylabel('Daily Corona Cases Worldwide')
+# plt.xlabel('Date')
+# plt.show()
+# plt.clf()
 #
 # result_us_sortedbycase = result_us.sort_values(['Daily_Cases']).reset_index(drop=True)
 # sns.scatterplot('Daily_Cases', 'Close', data=result_us)
@@ -76,11 +76,11 @@ result_us['Total_Cases'] = result_us['Daily_Cases'].cumsum(skipna=False)
 # plt.show()
 # plt.clf()
 #
-# sns.lineplot(x="Date", y="Total_Cases", data=result_world)
-# plt.ylabel('Total Corona Cases Worldwide')
-# plt.xlabel('Date')
-# plt.show()
-# plt.clf()
+sns.lineplot(x="Date", y="Total_Cases", data=result_world)
+plt.ylabel('Total Corona Cases Worldwide')
+plt.xlabel('Date')
+plt.show()
+plt.clf()
 #
 # result_us_sortedbycase = result_us.sort_values(['Total_Cases']).reset_index(drop=True)
 # sns.scatterplot('Total_Cases', 'Close', data=result_us)
