@@ -162,11 +162,11 @@ def f_2(x):
 
 # Plot the final graph of applied model with legend.
 plt.scatter(result_world50k.Total_Cases, result_world50k.Close, color='blue', label='Train values')
-plt.scatter(x_test, predicted_value_clf_1, color="yellow", label='Predicted val 2 degree')
-plt.scatter(x_test, predicted_value_clf_2, color='purple', label='Predicted val 3 degree')
+plt.scatter(x_test, predicted_value_clf_1, color="orange", label='Predicted val Quadratic')
+plt.scatter(x_test, predicted_value_clf_2, color='pink', label='Predicted val Cubic')
 xx = np.arange(58 * 10 ** 3, 4 * 10 ** 5)
-plt.plot(xx, f_1(xx), '-r', label='degree 2')
-plt.plot(xx, f_2(xx), '-g', label='degree 3')
+plt.plot(xx, f_1(xx), '-r', label='Quadratic')
+plt.plot(xx, f_2(xx), '-g', label='Cubic')
 plt.xlabel('Total Cases')
 plt.ylabel('Close')
 plt.legend(loc='lower left')
